@@ -1,0 +1,4 @@
+# Test that multi-output regression works as expected
+import sklearn.neural_network.tests.test_mlp as mlp
+
+mlp.test_multioutput_regression()

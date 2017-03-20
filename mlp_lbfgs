@@ -1,0 +1,58 @@
+import csv
+import sys
+import warnings
+
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import load_boston
+from sklearn.neural_network import MLPRegressor
+from sklearn.utils.testing import (assert_raises, assert_greater, assert_equal,
+								   assert_false, ignore_warnings)
+"""
+def readcsv(data_file_name):
+	with open(data_file_name) as f:
+		data_file = csv.reader(f)
+		temp = next(data_file)
+		n_samples = int(temp[0])
+		n_features = int(temp[1])
+		data = np.empty((n_samples, n_features))
+		target = np.empty((n_samples,))
+		temp = next(data_file)  # names of features
+		feature_names = np.array(temp)
+
+		for i, d in enumerate(data_file):
+			data[i] = np.asarray(d[:-1], dtype=np.float64)
+			target[i] = np.asarray(d[-1], dtype=np.float64)
+
+		return data, target
+"""
+	
+
+
+
+ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
+#boston = load_boston('data.csv')
+boston = load_boston()
+
+Xbos = StandardScaler().fit_transform(boston.data)
+Xboston = Xbos[:200]
+yboston = boston.target[:200]
+
+ytest = boston.target[200:300]
+Xtest = Xbos[200:300]
+
+X = Xboston
+y = yboston
+for activation in ACTIVATION_TYPES:
+	mlp = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50,max_iter=150, shuffle=True, random_state=1,activation=activation) 
+	mlp.fit(X, y)
+	if activation == 'identity':
+		assert_greater(mlp.score(X, y), 0.84)
+	else:
+		# Non linear models perform much better than linear bottleneck:
+		assert_greater(mlp.score(X, y), 0.95)
+
+	print('ACTIVATION_TYPES - {0} : '.format(activation))
+	print(mlp.predict(Xtest))
+	print(mlp.score(Xtest, ytest))
+

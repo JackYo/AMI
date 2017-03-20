@@ -1,0 +1,189 @@
+
+
+Tue Mar 21 00:33:10 2017
+Command line: TestDisk
+
+TestDisk 6.14, Data Recovery Utility, July 2013
+Christophe GRENIER <grenier@cgsecurity.org>
+http://www.cgsecurity.org
+OS: Linux, kernel 4.4.0-67-generic (#88~14.04.1-Ubuntu SMP Thu Mar 9 15:30:23 UTC 2017) x86_64
+Compiler: GCC 4.8
+Compilation date: 2013-10-29T01:29:29
+ext2fs lib: 1.42.9, ntfs lib: libntfs-3g, reiserfs lib: none, ewf lib: none
+Warning: can't get size for Disk /dev/mapper/control - 0 B - 1 sectors, sector size=512
+Hard disk list
+Disk /dev/sda - 42 GB / 40 GiB - CHS 5221 255 63, sector size=512 - VMware, VMware Virtual S, FW:1.0
+
+Partition table type (auto): Intel
+Disk /dev/sda - 42 GB / 40 GiB - VMware, VMware Virtual S
+Partition table type: Intel
+
+Interface Advanced
+Geometry from i386 MBR: head=255 sector=63
+ 1 * Linux                    0  32 33  4699 127 36   75495424
+     ext4 blocksize=4096 Large file Sparse superblock Recover, 38 GB / 35 GiB
+ 2 E extended              4699 160  4  5221 137 36    8384514
+ 5 L Linux Swap            4699 160  6  5221 137 36    8384512
+     SWAP2 version 1, pagesize=4096, 4292 MB / 4094 MiB
+
+
+dir_partition inode=2
+ 1 * Linux                    0  32 33  4699 127 36   75495424
+     ext4 blocksize=4096 Large file Sparse superblock Recover, 38 GB / 35 GiB
+Directory /
+       2 drwxr-xr-x     0      0      4096 16-Mar-2017 06:29 .
+       2 drwxr-xr-x     0      0      4096 16-Mar-2017 06:29 ..
+      11 drwx------     0      0     16384  2-Mar-2017 03:10 lost+found
+  524289 drwxr-xr-x     0      0      4096 20-Mar-2017 06:44 etc
+ 1835009 drwxr-xr-x     0      0      4096  2-Mar-2017 03:10 media
+  655361 drwxr-xr-x     0      0      4096  2-Mar-2017 03:25 bin
+ 1966081 drwxr-xr-x     0      0      4096 16-Mar-2017 06:29 boot
+  786433 drwxr-xr-x     0      0      4096  2-Mar-2017 03:10 dev
+  917505 drwxr-xr-x     0      0      4096  2-Mar-2017 03:18 home
+ 2097153 drwxr-xr-x     0      0      4096  6-Mar-2017 06:33 lib
+  131073 drwxr-xr-x     0      0      4096  2-Mar-2017 03:10 lib64
+ 1310721 drwxr-xr-x     0      0      4096 11-Apr-2014 06:12 mnt
+ 1179649 drwxr-xr-x     0      0      4096  2-Mar-2017 03:30 opt
+  262145 drwxr-xr-x     0      0      4096 11-Apr-2014 06:12 proc
+ 1441793 drwx------     0      0      4096  2-Mar-2017 03:31 root
+  393217 drwxr-xr-x     0      0      4096  2-Mar-2017 03:18 run
+ 2228225 drwxr-xr-x     0      0     12288  2-Mar-2017 03:24 sbin
+ 1572865 drwxr-xr-x     0      0      4096  3-Aug-2016 23:25 srv
+ 1703937 drwxr-xr-x     0      0      4096 13-Mar-2014 09:41 sys
+ 1835010 drwxrwxrwt     0      0      4096 21-Mar-2017 00:17 tmp
+ 1572866 drwxr-xr-x     0      0      4096  2-Mar-2017 03:34 usr
+  917506 drwxr-xr-x     0      0      4096  2-Mar-2017 03:17 var
+    2948 lrwxrwxrwx     0      0        32 16-Mar-2017 06:29 initrd.img
+    2715 lrwxrwxrwx     0      0        29 16-Mar-2017 06:29 vmlinuz
+X   2947 lrwxrwxrwx     0      0        29  9-Mar-2017 06:36 vmlinuz.2445
+    2946 lrwxrwxrwx     0      0        32  9-Mar-2017 06:36 initrd.img.old
+    2947 lrwxrwxrwx     0      0        29  9-Mar-2017 06:36 vmlinuz.old
+
+dir_partition inode=917505
+ 1 * Linux                    0  32 33  4699 127 36   75495424
+     ext4 blocksize=4096 Large file Sparse superblock Recover, 38 GB / 35 GiB
+Directory /home
+  917505 drwxr-xr-x     0      0      4096  2-Mar-2017 03:18 .
+       2 drwxr-xr-x     0      0      4096 16-Mar-2017 06:29 ..
+  917514 drwxr-xr-x  1000   1000      4096 19-Mar-2017 16:41 jack
+
+dir_partition inode=917514
+ 1 * Linux                    0  32 33  4699 127 36   75495424
+     ext4 blocksize=4096 Large file Sparse superblock Recover, 38 GB / 35 GiB
+Directory /home/jack
+  917514 drwxr-xr-x  1000   1000      4096 19-Mar-2017 16:41 .
+  917505 drwxr-xr-x     0      0      4096  2-Mar-2017 03:18 ..
+  918962 -rw-r--r--  1000   1000       675  2-Mar-2017 03:18 .profile
+  922484 -rw-r--r--  1000   1000      5118  6-Mar-2017 07:12 .bashrc
+  919265 -rw-r--r--  1000   1000       220  2-Mar-2017 03:18 .bash_logout
+  919907 drwx------  1000   1000      4096  6-Mar-2017 07:30 .cache
+  919395 -rw-rw-r--  1000   1000   9313954 23-Sep-2016 18:38 sublime_text_3_build_3126_x64.tar.bz2
+  917543 drwxrwxr-x  1000   1000      4096 23-Sep-2016 18:13 sublime_text_3
+  921149 -rw-------  1000   1000       110 19-Mar-2017 16:41 .Xauthority
+  918925 -rw-------  1000   1000      2376  7-Mar-2017 03:22 .bash_history
+  918928 -rw-rw-r--  1000   1000   7746994 23-Sep-2016 18:42 sublime-text_build-3126_amd64.deb
+  917513 drwx------  1000   1000      4096  6-Mar-2017 07:30 .config
+  918388 drwx------  1000   1000      4096  6-Mar-2017 06:43 .local
+  919206 -rw-------  1000   1000       826  6-Mar-2017 07:12 .viminfo
+  921161 drwxrwxr-x  1000   1000      4096  6-Mar-2017 07:04 .bash_it
+  920877 -rw-rw-r--  1000   1000       271  6-Mar-2017 07:03 .gitconfig
+  922475 -rw-r--r--  1000   1000      3683  2-Mar-2017 03:30 .bashrc.bak
+  918970 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:33 AMI
+  920654 drwxrwxr-x  1000   1000      4096  6-Mar-2017 07:29 scikit_learn_data
+  922499 drwxrwxr-x  1000   1000      4096  8-Mar-2017 21:42 DDMt
+  922522 drwx------  1000   1000      4096  8-Mar-2017 21:41 .ssh
+X 921147 -rw-rw-r--  1000   1000     34741 19-Mar-2017 17:10 .Xauthority-c
+X 921147 -rw-rw-r--  1000   1000     34741 19-Mar-2017 17:10 .Xauthority-l
+X 921149 -rw-------  1000   1000       110 19-Mar-2017 16:41 .Xauthority-n
+
+dir_partition inode=918970
+ 1 * Linux                    0  32 33  4699 127 36   75495424
+     ext4 blocksize=4096 Large file Sparse superblock Recover, 38 GB / 35 GiB
+Directory /home/jack/AMI
+  918970 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:33 .
+  917514 drwxr-xr-x  1000   1000      4096 19-Mar-2017 16:41 ..
+  918616 -rw-rw-r--  1000   1000       140 13-Mar-2017 21:50 test_multioutput
+  919314 -rw-r--r--     0      0        51 21-Mar-2017 00:33 testdisk.log
+  919895 -rw-rw-r--  1000   1000       223 19-Mar-2017 22:30 eggs.csv
+  920919 -rw-rw-r--  1000   1000       249 19-Mar-2017 18:47 readcsv.py
+  922697 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:23 combined_data
+  921147 -rw-rw-r--  1000   1000     34741 19-Mar-2017 17:10 data.csv
+X 922670 -rw-rw-r--  1000   1000    769340 21-Mar-2017 00:11 temp.csv
+  922677 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:12 data
+
+dir_partition inode=922697
+ 1 * Linux                    0  32 33  4699 127 36   75495424
+     ext4 blocksize=4096 Large file Sparse superblock Recover, 38 GB / 35 GiB
+Directory /home/jack/AMI/combined_data
+  922697 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:23 .
+  918970 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:33 ..
+Directory /home/jack/AMI
+  918970 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:33 .
+  917514 drwxr-xr-x  1000   1000      4096 19-Mar-2017 16:41 ..
+  918616 -rw-rw-r--  1000   1000       140 13-Mar-2017 21:50 test_multioutput
+  919314 -rw-r--r--     0      0        51 21-Mar-2017 00:33 testdisk.log
+  919895 -rw-rw-r--  1000   1000       223 19-Mar-2017 22:30 eggs.csv
+  920919 -rw-rw-r--  1000   1000       249 19-Mar-2017 18:47 readcsv.py
+  922697 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:23 combined_data
+  921147 -rw-rw-r--  1000   1000     34741 19-Mar-2017 17:10 data.csv
+X 922670 -rw-rw-r--  1000   1000    769340 21-Mar-2017 00:11 temp.csv
+  922677 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:12 data
+Directory /home/jack
+  917514 drwxr-xr-x  1000   1000      4096 19-Mar-2017 16:41 .
+  917505 drwxr-xr-x     0      0      4096  2-Mar-2017 03:18 ..
+  918962 -rw-r--r--  1000   1000       675  2-Mar-2017 03:18 .profile
+  922484 -rw-r--r--  1000   1000      5118  6-Mar-2017 07:12 .bashrc
+  919265 -rw-r--r--  1000   1000       220  2-Mar-2017 03:18 .bash_logout
+  919907 drwx------  1000   1000      4096  6-Mar-2017 07:30 .cache
+  919395 -rw-rw-r--  1000   1000   9313954 23-Sep-2016 18:38 sublime_text_3_build_3126_x64.tar.bz2
+  917543 drwxrwxr-x  1000   1000      4096 23-Sep-2016 18:13 sublime_text_3
+  921149 -rw-------  1000   1000       110 19-Mar-2017 16:41 .Xauthority
+  918925 -rw-------  1000   1000      2376  7-Mar-2017 03:22 .bash_history
+  918928 -rw-rw-r--  1000   1000   7746994 23-Sep-2016 18:42 sublime-text_build-3126_amd64.deb
+  917513 drwx------  1000   1000      4096  6-Mar-2017 07:30 .config
+  918388 drwx------  1000   1000      4096  6-Mar-2017 06:43 .local
+  919206 -rw-------  1000   1000       826  6-Mar-2017 07:12 .viminfo
+  921161 drwxrwxr-x  1000   1000      4096  6-Mar-2017 07:04 .bash_it
+  920877 -rw-rw-r--  1000   1000       271  6-Mar-2017 07:03 .gitconfig
+  922475 -rw-r--r--  1000   1000      3683  2-Mar-2017 03:30 .bashrc.bak
+  918970 drwxrwxr-x  1000   1000      4096 21-Mar-2017 00:33 AMI
+  920654 drwxrwxr-x  1000   1000      4096  6-Mar-2017 07:29 scikit_learn_data
+  922499 drwxrwxr-x  1000   1000      4096  8-Mar-2017 21:42 DDMt
+  922522 drwx------  1000   1000      4096  8-Mar-2017 21:41 .ssh
+X 921147 -rw-rw-r--  1000   1000     34741 19-Mar-2017 17:10 .Xauthority-c
+X 921147 -rw-rw-r--  1000   1000     34741 19-Mar-2017 17:10 .Xauthority-l
+X 921149 -rw-------  1000   1000       110 19-Mar-2017 16:41 .Xauthority-n
+Directory /home
+  917505 drwxr-xr-x     0      0      4096  2-Mar-2017 03:18 .
+       2 drwxr-xr-x     0      0      4096 16-Mar-2017 06:29 ..
+  917514 drwxr-xr-x  1000   1000      4096 19-Mar-2017 16:41 jack
+Directory /
+       2 drwxr-xr-x     0      0      4096 16-Mar-2017 06:29 .
+       2 drwxr-xr-x     0      0      4096 16-Mar-2017 06:29 ..
+      11 drwx------     0      0     16384  2-Mar-2017 03:10 lost+found
+  524289 drwxr-xr-x     0      0      4096 20-Mar-2017 06:44 etc
+ 1835009 drwxr-xr-x     0      0      4096  2-Mar-2017 03:10 media
+  655361 drwxr-xr-x     0      0      4096  2-Mar-2017 03:25 bin
+ 1966081 drwxr-xr-x     0      0      4096 16-Mar-2017 06:29 boot
+  786433 drwxr-xr-x     0      0      4096  2-Mar-2017 03:10 dev
+  917505 drwxr-xr-x     0      0      4096  2-Mar-2017 03:18 home
+ 2097153 drwxr-xr-x     0      0      4096  6-Mar-2017 06:33 lib
+  131073 drwxr-xr-x     0      0      4096  2-Mar-2017 03:10 lib64
+ 1310721 drwxr-xr-x     0      0      4096 11-Apr-2014 06:12 mnt
+ 1179649 drwxr-xr-x     0      0      4096  2-Mar-2017 03:30 opt
+  262145 drwxr-xr-x     0      0      4096 11-Apr-2014 06:12 proc
+ 1441793 drwx------     0      0      4096  2-Mar-2017 03:31 root
+  393217 drwxr-xr-x     0      0      4096  2-Mar-2017 03:18 run
+ 2228225 drwxr-xr-x     0      0     12288  2-Mar-2017 03:24 sbin
+ 1572865 drwxr-xr-x     0      0      4096  3-Aug-2016 23:25 srv
+ 1703937 drwxr-xr-x     0      0      4096 13-Mar-2014 09:41 sys
+ 1835010 drwxrwxrwt     0      0      4096 21-Mar-2017 00:17 tmp
+ 1572866 drwxr-xr-x     0      0      4096  2-Mar-2017 03:34 usr
+  917506 drwxr-xr-x     0      0      4096  2-Mar-2017 03:17 var
+    2948 lrwxrwxrwx     0      0        32 16-Mar-2017 06:29 initrd.img
+    2715 lrwxrwxrwx     0      0        29 16-Mar-2017 06:29 vmlinuz
+X   2947 lrwxrwxrwx     0      0        29  9-Mar-2017 06:36 vmlinuz.2445
+    2946 lrwxrwxrwx     0      0        32  9-Mar-2017 06:36 initrd.img.old
+    2947 lrwxrwxrwx     0      0        29  9-Mar-2017 06:36 vmlinuz.old
+
+TestDisk exited normally.
