@@ -38,6 +38,7 @@ Xbos = StandardScaler().fit_transform(boston.data)
 Xboston = Xbos[:200]
 yboston = boston.target[:200]
 
+#comment
 ytest = boston.target[200:300]
 Xtest = Xbos[200:300]
 
