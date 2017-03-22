@@ -7,9 +7,13 @@ import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -22,11 +26,13 @@ import javax.swing.JList;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 
 public class AMI_CBL {
 
 	private JFrame frmCbl;
 	private JTextField textField;
+	private ArrayList<File> fileList;
 
 	/**
 	 * Launch the application.
@@ -55,6 +61,8 @@ public class AMI_CBL {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		fileList=new ArrayList<>();
+		
 		frmCbl = new JFrame();
 		frmCbl.setTitle("CBL");
 		frmCbl.setBounds(100, 100, 900, 700);
@@ -77,6 +85,10 @@ public class AMI_CBL {
 		panel.add(textField);
 		textField.setColumns(10);
 		
+		JList<File> list = new JList<>();
+		list.setBounds(14, 118, 394, 207);
+		panel.add(list);
+		
 		JButton button = new JButton("\u700F\u89BD");
 		button.setBounds(309, 44, 99, 27);
 		button.addActionListener(new ActionListener(){
@@ -91,53 +103,93 @@ public class AMI_CBL {
 				{ 
 					File selectedFile = fileChooser.getSelectedFile();
 					textField.setText(selectedFile.getPath());
+					fileList.add(selectedFile);
+					list.setListData(fileList.toArray(new File[fileList.size()]));
 				} 
 			}
 			
 		});
 		panel.add(button);
 		
-		JList<String> list = new JList<>();
-		list.setBounds(14, 118, 413, 374);
-		panel.add(list);
-		
 		JLabel label_1 = new JLabel("2.\u53C3\u6578\u9078\u64C7");
 		label_1.setBounds(14, 83, 88, 19);
 		panel.add(label_1);
 		
 		JButton button_1 = new JButton("3.\u5206\u6790");
-		button_1.setBounds(14, 522, 99, 27);
+		button_1.setBounds(14, 338, 99, 27);
 		panel.add(button_1);
+
+		JButton buttonDelete = new JButton("\u522A\u9664");
+		buttonDelete.setBounds(309, 338, 99, 27);
+		buttonDelete.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				for(File s:list.getSelectedValuesList()){
+					fileList.remove(s);
+				}
+				list.setListData(fileList.toArray(new File[fileList.size()]));
+			}});
+		panel.add(buttonDelete);
 		
+
+		
+//====================== PANEL SEPARATOR ========================================================================		
 		
 		JPanel panelDL = new JPanel();
 		frmCbl.getContentPane().add(panelDL);
 		panelDL.setLayout(null);
 		
 		JSpinner spinnerYear = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.YEAR));
-		spinnerYear.setBounds(14, 32, 56, 26);
+		spinnerYear.setBounds(25, 32, 56, 26);
 		spinnerYear.setEditor(new JSpinner.DateEditor(spinnerYear,"Y"));
 		panelDL.add(spinnerYear);
 		
 		JSpinner spinnerMonth = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.MONTH));
-		spinnerMonth.setBounds(84, 32, 47, 26);
+		spinnerMonth.setBounds(105, 32, 47, 26);
 		spinnerMonth.setEditor(new JSpinner.DateEditor(spinnerMonth,"M"));
 		panelDL.add(spinnerMonth);
 		
 		JSpinner spinnerDate = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DATE));
-		spinnerDate.setBounds(146, 32, 37, 26);
-		spinnerDate.setEditor(new JSpinner.DateEditor(spinnerDate,"D"));
+		spinnerDate.setBounds(178, 32, 47, 26);
+		spinnerDate.setEditor(new JSpinner.DateEditor(spinnerDate,"d"));
 		panelDL.add(spinnerDate);
 		
 		JSpinner spinnerHour = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.HOUR_OF_DAY));
-		spinnerHour.setBounds(232, 32, 56, 26);
-		spinnerHour.setEditor(new JSpinner.DateEditor(spinnerHour,"h"));
+		spinnerHour.setBounds(275, 32, 47, 26);
+		spinnerHour.setEditor(new JSpinner.DateEditor(spinnerHour,"H"));
 		panelDL.add(spinnerHour);
 		
 		JSpinner spinnerMinute = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.MINUTE));
-		spinnerMinute.setBounds(318, 32, 47, 26);
+		spinnerMinute.setBounds(343, 32, 47, 26);
 		spinnerMinute.setEditor(new JSpinner.DateEditor(spinnerMinute,"m"));
 		panelDL.add(spinnerMinute);
+		
+		JLabel label_2 = new JLabel("\u5E74");
+		label_2.setBounds(84, 35, 20, 19);
+		panelDL.add(label_2);
+		
+		JLabel label_3 = new JLabel("\u6708");
+		label_3.setBounds(158, 35, 20, 19);
+		panelDL.add(label_3);
+		
+		JLabel label_4 = new JLabel("\u65E5");
+		label_4.setBounds(234, 35, 57, 19);
+		panelDL.add(label_4);
+		
+		JLabel label_5 = new JLabel(":");
+		label_5.setBounds(328, 35, 57, 19);
+		panelDL.add(label_5);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(25, 142, 377, 354);
+		panelDL.add(textArea);
+		
+		JButton button_3 = new JButton("\u4F7F\u7528\u985E\u795E\u7D93\u7DB2\u8DEF\u9810\u6E2C");
+		button_3.setBounds(25, 88, 218, 27);
+		panelDL.add(button_3);
+
 		
 		
 	}
