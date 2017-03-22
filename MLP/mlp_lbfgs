@@ -31,7 +31,7 @@ def readcsv(data_file_name):
 
 ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
 #ACTIVATION_TYPES = ["logistic"]
-combinedData = readcsv('data/combined.csv')
+combinedData = readcsv('data/combined2.csv')
 Xbos = StandardScaler().fit_transform(combinedData[0])
 origin = combinedData[0]
 date = combinedData[2]
