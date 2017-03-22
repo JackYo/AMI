@@ -19,8 +19,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import java.awt.Font;
@@ -36,6 +40,7 @@ public class AMI_CBL {
 	private ArrayList<File> fileList;
 	private JTable table;
 	private ArrayList<ArrayList<Object>> array;
+	private DefaultTableModel tm;
 
 	/**
 	 * Launch the application.
@@ -120,6 +125,18 @@ public class AMI_CBL {
 		
 		JButton button_1 = new JButton("3.\u5206\u6790");
 		button_1.setBounds(14, 338, 99, 27);
+		button_1.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				ArrayList<Object> ar=new ArrayList<>();
+				ar.add("GGWP");
+				ar.add(9487);
+				tm.addRow(ar.toArray(new Object[ar.size()]));
+			}
+			
+		});
 		panel.add(button_1);
 
 		JButton buttonDelete = new JButton("\u522A\u9664");
@@ -141,8 +158,10 @@ public class AMI_CBL {
 		for(int i=0;i<array.size();i++){
 			data[i]=array.get(i).toArray(new Object[array.get(i).size()]);
 		}
-		table = new JTable(data,col);
-		table.setBounds(14, 378, 394, 207);
+		tm=new DefaultTableModel();
+		tm.setDataVector(data, col);
+		table = new JTable(tm);
+		table.setBounds(14, 404, 394, 207);
 		
 		panel.add(table);
 		
