@@ -23,7 +23,7 @@ def readcsv(data_file_name):
 
 		for i, d in enumerate(data_file):
 			date[i] = d[0]
-			data[i] = np.asarray(d[2:-1], dtype=np.float64)
+			data[i] = np.asarray(d[1:-1], dtype=np.float64)
 			target[i] = np.asarray(d[-1], dtype=np.float64)
 
 		return data, target, date
