@@ -75,7 +75,6 @@ public class LinearRegression {
 		
 		System.out.println(RSquare = regression.getRSquare());
 		
-		
 		//y = intercept + slope * x
 		System.out.println(intercept = regression.getIntercept());
 		// displays intercept of regression line
