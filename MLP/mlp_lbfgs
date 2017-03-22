@@ -33,6 +33,7 @@ ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
 #ACTIVATION_TYPES = ["logistic"]
 combinedData = readcsv('data/combined.csv')
 Xbos = StandardScaler().fit_transform(combinedData[0])
+origin = combinedData[0]
 date = combinedData[2]
 #combinedData = load_boston()
 
@@ -41,11 +42,11 @@ date = combinedData[2]
 
 def test_score():
 	sampleMin = 0
-	sampleMax = 1000
+	sampleMax = 10000
 	featureIndex = sampleMax
 	targetIndex = sampleMin
-	testTargetIndexR = sampleMax
-	testTargetIndexL = 700
+	testTargetIndexR = 10096
+	testTargetIndexL = 10000
 
 	activation_predict = np.empty((1,5),dtype = np.object)
 	predictScoreArray = np.empty((0,5),dtype = np.object)
@@ -91,29 +92,35 @@ def test_score():
 	print(predictScoreArray)
 	#csv.write(predictPowArray)
 
-def real_predict():
+
+
+def predict_complete():
 	sampleMin = 0
-	sampleMax = 1000
-	predictMin = 1000
-	predictMax = 1096
+	sampleMax = 10000
+	predictMin = 10000
+	predictMax = 10096
 	featureIndex = sampleMax
 	targetIndex = sampleMin
 	testTargetIndexL = predictMin
+	testTargetIndexR = predictMax
 
 
-	date_predict = np.empty((1,2), dtype=np.object)
-	date_predict_array = np.empty((0,2))
+	date_predict = np.empty((1,5), dtype=np.object)
+	date_predict_array = np.empty((0,5))
 
 	for k in range(1,97):
 
 		X = Xbos[sampleMin:featureIndex]
 		y = combinedData[1][targetIndex:sampleMax]
 
-		Xtest = Xbos[predictMin].reshape(1,-1)
-		ytest = combinedData[1][testTargetIndexL].reshape(1,-1)
+		Xtest = Xbos[predictMin:predictMax]
+		ytest = combinedData[1][testTargetIndexL:testTargetIndexR]
+
+		Xpredict = Xbos[predictMin].reshape(1,-1)
+		#ypredict = combinedData[1][testTargetIndexL].reshape(1,-1)
 
 		# use logistic
-		mlp = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50,max_iter=150, shuffle=True, random_state=1,activation="logistic") 
+		mlp = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50,max_iter=150, warm_start=True, shuffle=True, random_state=1,activation="logistic") 
 		mlp.fit(X, y)
 		
 		"""
@@ -124,29 +131,43 @@ def real_predict():
 			assert_greater(mlp.score(X, y), 0.95)
 			"""
 
+		#show training parameter
 		print('ACTIVATION_TYPES - {0} : '.format("logistic"))
-		print('training score is {0}'.format(mlp.score(X,y)))
-		predict = mlp.predict(Xtest)
+
+		#show training score
+		trainingScore = mlp.score(X,y)
+		date_predict[0][3]= trainingScore
+		print('training score is {0}'.format(trainingScore))
+		
+		#calculate predict score
+		predictScore = mlp.score(Xtest, ytest)
+		date_predict[0][4]= predictScore
+		print('predict score is {0}'.format(predictScore))
+
+		#real predict
+		predict = mlp.predict(Xpredict)
 		date_predict[0][0]= date[testTargetIndexL+1]
 		date_predict[0][1]= predict
+		date_predict[0][2]= combinedData[0][testTargetIndexL+1][2]
 		print('predict result:\n {0}'.format(predict))
-		predictScore = mlp.score(Xtest, ytest)
-		print('predict score is {0}'.format(predictScore))
-		print('\n')
 
 		featureIndex = featureIndex-1
 		targetIndex = targetIndex+1
 		testTargetIndexL = testTargetIndexL+1
-		#testTargetIndexR = testTargetIndexR+1
+		testTargetIndexR = testTargetIndexR+1
 		date_predict_array= np.append(date_predict_array,date_predict,0)
 
-	print("date", "prediction")
+		print('\n')
+
+	print("date", "prediction", "origin", "training score", "predicting score")
 	print(date_predict_array)
-	with open('output.csv', 'w') as csvfile:
+	with open('output2.csv', 'w') as csvfile:
 		#spamwriter = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
 		spamwriter = csv.writer(csvfile, delimiter=',')
+		spamwriter.writerow(["date", "prediction", "origin", "training score", "predicting score"])
 		for row in date_predict_array:
 			spamwriter.writerow(row)
 
-test_score()
-real_predict()
+
+#test_score()
+predict_complete()
