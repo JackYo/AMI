@@ -27,12 +27,14 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTable;
 
 public class AMI_CBL {
 
 	private JFrame frmCbl;
 	private JTextField textField;
 	private ArrayList<File> fileList;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -139,6 +141,8 @@ public class AMI_CBL {
 		table.setBounds(14, 378, 394, 207);
 		
 		panel.add(table);
+		
+
 		
 //====================== PANEL SEPARATOR ========================================================================		
 		
