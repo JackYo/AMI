@@ -31,6 +31,7 @@ def readcsv(data_file_name):
 
 ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
 #ACTIVATION_TYPES = ["logistic"]
+n_features = 0
 combinedData = readcsv('data/combined2.csv')
 Xbos = StandardScaler().fit_transform(combinedData[0])
 origin = combinedData[0]
@@ -148,7 +149,7 @@ def predict_complete():
 		predict = mlp.predict(Xpredict)
 		date_predict[0][0]= date[testTargetIndexL+1]
 		date_predict[0][1]= predict
-		date_predict[0][2]= combinedData[0][testTargetIndexL+1][2]
+		date_predict[0][2]= combinedData[0][testTargetIndexL+1][n_features]
 		print('predict result:\n {0}'.format(predict))
 
 		featureIndex = featureIndex-1
