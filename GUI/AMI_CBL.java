@@ -27,12 +27,15 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTable;
 
 public class AMI_CBL {
 
 	private JFrame frmCbl;
 	private JTextField textField;
 	private ArrayList<File> fileList;
+	private JTable table;
+	private ArrayList<ArrayList<Object>> array;
 
 	/**
 	 * Launch the application.
@@ -62,7 +65,7 @@ public class AMI_CBL {
 	 */
 	private void initialize() {
 		fileList=new ArrayList<>();
-		
+		array = new ArrayList<>();
 		frmCbl = new JFrame();
 		frmCbl.setTitle("CBL");
 		frmCbl.setBounds(100, 100, 900, 700);
@@ -132,6 +135,16 @@ public class AMI_CBL {
 				list.setListData(fileList.toArray(new File[fileList.size()]));
 			}});
 		panel.add(buttonDelete);
+		
+		Object[] col={"Name","Value"};
+		Object[][] data=new Object[array.size()][];
+		for(int i=0;i<array.size();i++){
+			data[i]=array.get(i).toArray(new Object[array.get(i).size()]);
+		}
+		table = new JTable(data,col);
+		table.setBounds(14, 378, 394, 207);
+		
+		panel.add(table);
 		
 
 		
