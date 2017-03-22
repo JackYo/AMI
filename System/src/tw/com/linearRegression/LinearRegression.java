@@ -45,11 +45,15 @@ public class LinearRegression {
 	public void setSlopeStdErr(double slopeStdErr) {
 		this.slopeStdErr = slopeStdErr;
 	}
+	
+	public void reset(){
+		regression = new SimpleRegression();
+	}
 
 	private double slopeStdErr;
 	
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ArrayList<String> paths = new ArrayList<String>();
 		paths.add("D:\\AMI\\ElectricCBLEstimate\\LR\\temp.csv");
@@ -61,7 +65,7 @@ public class LinearRegression {
 		
 		Graph drawGraph = new Graph("temperature" , resources.get(0) , LR.getSlope() , LR.getIntercept());
 		drawGraph.drawGraph();
-	}	
+	}	*/
 	
 	public void regressionAnalysis(InputResource input)
 	{

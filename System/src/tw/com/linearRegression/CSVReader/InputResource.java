@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class InputResource {
 	
 	private String dataName;
+	private ArrayList<String> time = new ArrayList<>();
 	private ArrayList<Float> datas = new ArrayList<>();
 	private ArrayList<Float> elcDatas = new ArrayList<>();
 	private int dataNum = 0;
@@ -90,6 +91,18 @@ public class InputResource {
 
 	public void setMinElcData(float minElcData) {
 		this.minElcData = minElcData;
+	}
+
+	public ArrayList<String> getTime() {
+		return time;
+	}
+
+	public void setTime(ArrayList<String> time) {
+		this.time = time;
+	}
+	
+	public void addTime(String t){
+		time.add(t);
 	}
 
 }
