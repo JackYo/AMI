@@ -28,47 +28,55 @@ def readcsv(data_file_name):
 
 
 ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
+#ACTIVATION_TYPES = ["identity"]
 boston = readcsv('data/combined.csv')
 Xbos = StandardScaler().fit_transform(boston[0])
 #boston = load_boston()
-featureIndex = 144
-targetIndex = 0
-testTargetIndexR = 240
-testTargetIndexL = 144
+sampleMin = 0
+sampleMax = 1000
+featureIndex = sampleMax
+targetIndex = sampleMin
+testTargetIndexR = sampleMax
+testTargetIndexL = 700
 #result = []
-predict = []
+
+activation_predict = np.empty((1,4))
+predict = np.empty((0,4))
 
 
-Xboston = Xbos[:featureIndex]
-yboston = boston[1][targetIndex:144]
+for k in range(1,10):
 
-#comment
-ytest = boston[1][testTargetIndexL:testTargetIndexR]
-Xtest = Xbos[144:240]
+	X = Xbos[sampleMin:featureIndex]
+	y = boston[1][targetIndex:sampleMax]
 
-X = Xboston
-y = yboston
-for activation in ACTIVATION_TYPES:
-	mlp = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50,max_iter=150, shuffle=True, random_state=1,activation=activation) 
-	mlp.fit(X, y)
-	
-	"""
-	if activation == 'identity':
-		assert_greater(mlp.score(X, y), 0.84)
-	else:
-		# Non linear models perform much better than linear bottleneck:
-		assert_greater(mlp.score(X, y), 0.95)
+	Xtest = Xbos[700:sampleMax]
+	ytest = boston[1][testTargetIndexL:testTargetIndexR]
+
+	for i,activation in enumerate(ACTIVATION_TYPES):
+		mlp = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50,max_iter=150, shuffle=True, random_state=1,activation=activation) 
+		mlp.fit(X, y)
+		
 		"""
+		if activation == 'identity':
+			assert_greater(mlp.score(X, y), 0.84)
+		else:
+			# Non linear models perform much better than linear bottleneck:
+			assert_greater(mlp.score(X, y), 0.95)
+			"""
 
-	print('ACTIVATION_TYPES - {0} : '.format(activation))
-	print('training score is {0}'.format(mlp.score(Xboston,yboston)))
-	print('predict result:\n {0}'.format(mlp.predict(Xtest)))
-	predictScore = mlp.score(Xtest, ytest)
-	predict.append(predictScore)
-	print('predict score is {0}'.format(mlp.score(Xtest, ytest)))
+		print('ACTIVATION_TYPES - {0} : '.format(activation))
+		print('training score is {0}'.format(mlp.score(X,y)))
+		print('predict result:\n {0}'.format(mlp.predict(Xtest)))
+		predictScore = mlp.score(Xtest, ytest)
+		activation_predict[0][i]= predictScore
+		print('predict score is {0}'.format(predictScore))
+		print('\n')
 
-featureIndex = featureIndex-1
-targetIndex = targetIndex+1
-testTargetIndexL = testTargetIndexL+1
-testTargetIndexR = testTargetIndexR+1
+	featureIndex = featureIndex-1
+	targetIndex = targetIndex+1
+	testTargetIndexL = testTargetIndexL+1
+	testTargetIndexR = testTargetIndexR+1
+	predict= np.append(predict,activation_predict,0)
+
+print("identity", "logistic", "tanh", "relu")
 print(predict)
