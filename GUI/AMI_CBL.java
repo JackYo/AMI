@@ -35,6 +35,7 @@ public class AMI_CBL {
 	private JTextField textField;
 	private ArrayList<File> fileList;
 	private JTable table;
+	private ArrayList<ArrayList<Object>> array;
 
 	/**
 	 * Launch the application.
@@ -64,7 +65,7 @@ public class AMI_CBL {
 	 */
 	private void initialize() {
 		fileList=new ArrayList<>();
-		
+		array = new ArrayList<>();
 		frmCbl = new JFrame();
 		frmCbl.setTitle("CBL");
 		frmCbl.setBounds(100, 100, 900, 700);
@@ -136,7 +137,10 @@ public class AMI_CBL {
 		panel.add(buttonDelete);
 		
 		Object[] col={"Name","Value"};
-		Object[][] data={{"Test",123},{"XDDD",9453}};
+		Object[][] data=new Object[array.size()][];
+		for(int i=0;i<array.size();i++){
+			data[i]=array.get(i).toArray(new Object[array.get(i).size()]);
+		}
 		table = new JTable(data,col);
 		table.setBounds(14, 378, 394, 207);
 		
