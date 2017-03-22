@@ -133,7 +133,12 @@ public class AMI_CBL {
 			}});
 		panel.add(buttonDelete);
 		
-
+		Object[] col={"Name","Value"};
+		Object[][] data={{"Test",123},{"XDDD",9453}};
+		table = new JTable(data,col);
+		table.setBounds(14, 378, 394, 207);
+		
+		panel.add(table);
 		
 //====================== PANEL SEPARATOR ========================================================================		
 		
