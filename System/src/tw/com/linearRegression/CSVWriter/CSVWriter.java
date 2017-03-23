@@ -26,9 +26,10 @@ public class CSVWriter {
 		PrintWriter ansWriter = new PrintWriter(answerDataFile , "UTF-8");
 		int featureNum = resultData.size();
 		int commaNum = featureNum + 1;
+		int elcFeature = featureNum + 1;
 		int dataRow = resultData.get(0).getDataNum();
-		System.out.println(dataRow + "," + featureNum);
-		writer.print(dataRow + "," + featureNum);
+		System.out.println(dataRow + "," + elcFeature);
+		writer.print(dataRow + "," + elcFeature);
 		for(int i = 1; i <= commaNum; i++)
 		{
 			writer.print(",");

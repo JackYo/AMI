@@ -27,9 +27,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import tw.com.linearRegression.LinearRegression;
+import tw.com.linearRegression.CBLResult.ResultInfo;
 import tw.com.linearRegression.CSVReader.CSVReader;
 import tw.com.linearRegression.CSVReader.InputResource;
 import tw.com.linearRegression.CSVWriter.CSVWriter;
+import tw.com.linearRegression.drawGraph.DrawCBL;
 import tw.com.linearRegression.drawGraph.Graph;
 
 import javax.swing.JButton;
@@ -47,9 +49,12 @@ public class Main {
 	
 	private ArrayList<File> fileList;
 	private JTable table;
+	private JTable resultTable;
 	private ArrayList<InputResource> resources;
 	private ArrayList<ArrayList<Object>> array;
 	private DefaultTableModel tm;
+	private DefaultTableModel resultTm;
+	private ArrayList<ResultInfo> result;
 
 	/**
 	 * Launch the application.
@@ -188,7 +193,7 @@ public class Main {
 
 		
 //====================== PANEL SEPARATOR ========================================================================		
-		
+				
 		JPanel panelDL = new JPanel();
 		frmCbl.getContentPane().add(panelDL);
 		panelDL.setLayout(null);
@@ -234,9 +239,15 @@ public class Main {
 		label_5.setBounds(328, 35, 57, 19);
 		panelDL.add(label_5);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(25, 142, 377, 354);
-		panelDL.add(textArea);
+		Object[] resultCol={"Date","預測電量" , "Prediction Score" , "Training Score"};
+		Object[][] resultData={};
+
+		resultTm=new DefaultTableModel();
+		resultTm.setDataVector(resultData, resultCol);
+		resultTm.addRow(resultCol);
+		resultTable = new JTable(resultTm);
+		resultTable.setBounds(25, 142, 377, 354);
+		panelDL.add(resultTable);
 		
 		JButton button_3 = new JButton("\u4F7F\u7528\u985E\u795E\u7D93\u7DB2\u8DEF\u9810\u6E2C");
 		button_3.setBounds(25, 88, 218, 27);
@@ -256,11 +267,13 @@ public class Main {
 					e1.printStackTrace();
 					System.out.println("寫檔失敗");
 				}
-				/*try{
+				try{
 					
 					int number1 = 10;
 					int number2 = 32;
-					ProcessBuilder pb = new ProcessBuilder("python","../python/mlp_test.py");
+					System.out.println("python start");
+					ProcessBuilder pb = new ProcessBuilder("D:\\WinPython-64bit-3.4.4.6Qt5\\python-3.4.4.amd64\\python","D:\\AMI\\AMI\\System\\python\\mlp_lbfgs.py");
+					
 					Process p = pb.start();
 					 
 					String line;
@@ -269,14 +282,42 @@ public class Main {
 						System.out.println(line);
 					}
 					System.out.println("\npython finished");
+					//result output
+					String path = "D:\\AMI\\AMI\\System\\output\\output_complete.csv";
+					CSVReader reader = new CSVReader(path);
+					 result = reader.resultParse();
+					
+					for(int i = 0; i < result.size(); i++)
+					{
+						ArrayList<Object> ar = new ArrayList<>();
+						ar.add(result.get(i).getDate());
+						ar.add(result.get(i).getPredic_elc());
+						ar.add(result.get(i).getPredicScore());
+						ar.add(result.get(i).getTrainScore());
+						resultTm.addRow(ar.toArray(new Object[ar.size()]));
+					}
 				}catch(Exception e4){
 					e4.printStackTrace();
-				}*/
+				}
 			}
 		});
 		panelDL.add(button_3);
 
-		
+		JButton btncbl = new JButton("\u986F\u793ACBL\u66F2\u7DDA");
+		btncbl.setBounds(269, 523, 133, 27);
+		btncbl.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				String time = String.valueOf(spinnerYear.getValue()) + String.valueOf(spinnerMonth.getValue()) 
+				+ String.valueOf(spinnerDate.getValue()) + String.valueOf(spinnerHour.getValue()) + String.valueOf(spinnerMinute.getValue());
+				DrawCBL drawCBL = new DrawCBL(time , result);
+				drawCBL.draw();
+			}
+			
+		});
+		panelDL.add(btncbl);
 		
 	}
 }

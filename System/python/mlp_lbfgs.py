@@ -9,7 +9,7 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.utils.testing import (assert_raises, assert_greater, assert_equal,
 								   assert_false, ignore_warnings)
 
-def readcsv(data_file_name):
+def readcsv(data_file_name, answer_file_name):
 	with open(data_file_name) as f:
 		data_file = csv.reader(f)
 		temp = next(data_file)
@@ -18,21 +18,29 @@ def readcsv(data_file_name):
 		date = np.empty((n_samples,), dtype=np.object)
 		data = np.empty((n_samples, n_features))
 		target = np.empty((n_samples,))
-		temp = next(data_file)  # names of features
+
+		# names of features
+		temp = next(data_file)  
 		feature_names = np.array(temp)
 
 		for i, d in enumerate(data_file):
-			date[i] = d[0]
-			data[i] = np.asarray(d[1:-1], dtype=np.float64)
-			target[i] = np.asarray(d[-1], dtype=np.float64)
+			if i < n_samples-1:
+				date[i] = d[0]
+				data[i] = np.asarray(d[1:], dtype=np.float64)
+				#target[i] = np.asarray(d[-1], dtype=np.float64)
+
+		with open(answer_file_name) as f2:
+			answer_file = csv.reader(f2)
+			for j, e in enumerate(answer_file):
+				target[j] = np.asarray(e[0], dtype=np.float64)
 
 		return data, target, date
 
 def predict_complete():
 	sampleMin = 0
-	sampleMax = 10000
-	predictMin = 10000
-	predictMax = 10096
+	sampleMax = 1000
+	predictMin = 1000
+	predictMax = 1096
 	featureIndex = sampleMax
 	targetIndex = sampleMin
 	testTargetIndexL = predictMin
@@ -81,8 +89,8 @@ def predict_complete():
 		#real predict
 		predict = mlp.predict(Xpredict)
 		date_predict[0][0]= date[testTargetIndexL+1]
-		date_predict[0][1]= predict
-		date_predict[0][2]= combinedData[0][testTargetIndexL+1][n_features]
+		date_predict[0][1]= predict[0]
+		date_predict[0][2]= combinedData[0][testTargetIndexL+1][n_features-1]
 		print('predict result:\n {0}'.format(predict))
 
 		featureIndex = featureIndex-1
@@ -95,7 +103,7 @@ def predict_complete():
 
 	print("date", "prediction", "origin", "training score", "predicting score")
 	print(date_predict_array)
-	with open('output2.csv', 'w') as csvfile:
+	with open('D:/AMI/AMI/System/output/output_complete.csv', 'w') as csvfile:
 		#spamwriter = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
 		spamwriter = csv.writer(csvfile, delimiter=',')
 		spamwriter.writerow(["date", "prediction", "origin", "training score", "predicting score"])
@@ -104,7 +112,7 @@ def predict_complete():
 
 ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
 n_features = 0
-combinedData = readcsv('data/combined2.csv')
+combinedData = readcsv('D:/AMI/AMI/System/data/rawData.csv','D:/AMI/AMI/System/data/answerData.csv')
 #combinedData = load_boston()
 Xbos = StandardScaler().fit_transform(combinedData[0])
 origin = combinedData[0]
