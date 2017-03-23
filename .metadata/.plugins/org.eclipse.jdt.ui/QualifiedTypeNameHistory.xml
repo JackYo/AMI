@@ -6,4 +6,27 @@
 <fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="java.io.InputStreamReader"/>
 <fullyQualifiedTypeName name="javax.swing.table.DefaultTableModel"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="tw.com.linearRegression.CBLResult.ResultInfo"/>
+<fullyQualifiedTypeName name="org.jfree.chart.JFreeChart"/>
+<fullyQualifiedTypeName name="org.jfree.ui.ApplicationFrame"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.XYDataset"/>
+<fullyQualifiedTypeName name="org.jfree.data.time.TimeSeriesCollection"/>
+<fullyQualifiedTypeName name="org.jfree.data.time.TimePeriodValues"/>
+<fullyQualifiedTypeName name="org.jfree.data.time.Day"/>
+<fullyQualifiedTypeName name="org.jfree.data.time.SimpleTimePeriod"/>
+<fullyQualifiedTypeName name="org.jfree.data.time.Hour"/>
+<fullyQualifiedTypeName name="org.jfree.data.time.Minute"/>
+<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.text.ParseException"/>
+<fullyQualifiedTypeName name="org.jfree.data.time.TimePeriodValuesCollection"/>
+<fullyQualifiedTypeName name="org.jfree.chart.axis.DateAxis"/>
+<fullyQualifiedTypeName name="org.jfree.chart.axis.DateTickUnit"/>
+<fullyQualifiedTypeName name="org.jfree.chart.renderer.xy.StandardXYItemRenderer"/>
+<fullyQualifiedTypeName name="org.jfree.chart.plot.XYPlot"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartPanel"/>
+<fullyQualifiedTypeName name="org.jfree.ui.RefineryUtilities"/>
+<fullyQualifiedTypeName name="tw.com.linearRegression.drawGraph.DrawCBL"/>
 </qualifiedTypeNameHistroy>

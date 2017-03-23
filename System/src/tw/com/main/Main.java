@@ -213,15 +213,6 @@ public class Main {
 		spinnerDate.setEditor(new JSpinner.DateEditor(spinnerDate,"d"));
 		panelDL.add(spinnerDate);
 		
-		JSpinner spinnerHour = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.HOUR_OF_DAY));
-		spinnerHour.setBounds(275, 32, 47, 26);
-		spinnerHour.setEditor(new JSpinner.DateEditor(spinnerHour,"H"));
-		panelDL.add(spinnerHour);
-		
-		JSpinner spinnerMinute = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.MINUTE));
-		spinnerMinute.setBounds(343, 32, 47, 26);
-		spinnerMinute.setEditor(new JSpinner.DateEditor(spinnerMinute,"m"));
-		panelDL.add(spinnerMinute);
 		
 		JLabel label_2 = new JLabel("\u5E74");
 		label_2.setBounds(84, 35, 20, 19);
@@ -235,9 +226,6 @@ public class Main {
 		label_4.setBounds(234, 35, 57, 19);
 		panelDL.add(label_4);
 		
-		JLabel label_5 = new JLabel(":");
-		label_5.setBounds(328, 35, 57, 19);
-		panelDL.add(label_5);
 		
 		Object[] resultCol={"Date","¹w´ú¹q¶q" , "Prediction Score" , "Training Score"};
 		Object[][] resultData={};
@@ -302,6 +290,33 @@ public class Main {
 			}
 		});
 		panelDL.add(button_3);
+		
+		JButton buttonInputPara = new JButton("\u53C3\u6578\u8F38\u5165");
+		 buttonInputPara.setBounds(291, 88, 99, 27);
+		 buttonInputPara.addActionListener(new ActionListener(){
+		 
+		 @Override
+		 public void actionPerformed(ActionEvent arg0) {
+		 		JFrame addPara=new JFrame();
+		 		addPara.setTitle("Parameter");
+		 		addPara.setBounds(100, 100, 425, 375);
+		 		addPara.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				addPara.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		 		JPanel addPanel=new JPanel();
+		 		addPara.getContentPane().add(addPanel);
+		 		addPanel.setLayout(null);
+		 		addPara.setVisible(true);
+				JTable addTable=new JTable();
+				addTable.setBounds(25, 25, 350, 200);
+		 		addPanel.add(addTable);
+		 		JButton addRead=new JButton("\u8B80\u6A94");
+		 		addRead.setBounds(25, 250, 100, 25);
+		 		addPanel.add(addRead);
+		 		JButton addSave=new JButton("\u5B58\u6A94");
+		 		addSave.setBounds(275, 250, 100, 25);
+		 		addPanel.add(addSave);
+		 }});
+		 	panelDL.add(buttonInputPara);
 
 		JButton btncbl = new JButton("\u986F\u793ACBL\u66F2\u7DDA");
 		btncbl.setBounds(269, 523, 133, 27);
@@ -311,7 +326,7 @@ public class Main {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				String time = String.valueOf(spinnerYear.getValue()) + String.valueOf(spinnerMonth.getValue()) 
-				+ String.valueOf(spinnerDate.getValue()) + String.valueOf(spinnerHour.getValue()) + String.valueOf(spinnerMinute.getValue());
+				+ String.valueOf(spinnerDate.getValue());
 				DrawCBL drawCBL = new DrawCBL(time , result);
 				drawCBL.draw();
 			}

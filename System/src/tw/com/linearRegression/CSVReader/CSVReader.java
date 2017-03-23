@@ -110,11 +110,12 @@ public class CSVReader {
 		String[] rl= null;
 		try {
 			br = new BufferedReader(new FileReader(resultPath));
-			br.readLine();//ignore column title
-			readLine = "";
-			br.readLine();
-			while(((readLine = br.readLine()) != null) && !readLine.equals(""))
+			
+			readLine = br.readLine();//ignore column title
+			//br.readLine();
+			while(readLine != null && !readLine.equals(""))
 			{
+				readLine = br.readLine();
 				ResultInfo ri = new ResultInfo();
 				rl = readLine.split(splitBy);
 				System.out.println(readLine);
