@@ -9,7 +9,10 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.utils.testing import (assert_raises, assert_greater, assert_equal,
 								   assert_false, ignore_warnings)
 
+n_features = None
+
 def readcsv(data_file_name, answer_file_name):
+	global n_features
 	with open(data_file_name) as f:
 		data_file = csv.reader(f)
 		temp = next(data_file)
@@ -36,11 +39,26 @@ def readcsv(data_file_name, answer_file_name):
 
 		return data, target, date
 
+
+def predict_user():
+	sampleMin = 0
+	sampleMax = 100
+	#predictMin = 100
+	#predictMax = 150
+	featureIndex = sampleMax
+	targetIndex = sampleMin
+	#testTargetIndexL = predictMin
+	#testTargetIndexR = predictMax
+
+
+	date_predict = np.empty((1,5), dtype=np.object)
+	date_predict_array = np.empty((0,5))
+
 def predict_complete():
 	sampleMin = 0
 	sampleMax = 100
 	predictMin = 100
-	predictMax = 196
+	predictMax = 150
 	featureIndex = sampleMax
 	targetIndex = sampleMin
 	testTargetIndexL = predictMin
@@ -55,10 +73,17 @@ def predict_complete():
 		X = Xbos[sampleMin:featureIndex]
 		y = combinedData[1][targetIndex:sampleMax]
 
+
 		Xtest = Xbos[predictMin:predictMax]
 		ytest = combinedData[1][testTargetIndexL:testTargetIndexR]
 
-		Xpredict = Xbos[predictMin].reshape(1,-1)
+		#Xpredict = Xbos[predictMin].reshape(1,-1)
+		
+		Xpredict = np.empty((n_features,))
+		for j in range(1,n_features):
+			Xpredict[j-1] = float(sys.argv[j])
+		Xpredict = Xpredict.reshape(1,-1)
+		
 		#ypredict = combinedData[1][testTargetIndexL].reshape(1,-1)
 
 		# use logistic
@@ -88,8 +113,9 @@ def predict_complete():
 
 		#real predict
 		predict = mlp.predict(Xpredict)
-		date_predict[0][0]= date[testTargetIndexL+1]
-		date_predict[0][1]= predict
+
+		date_predict[0][0]= k
+		date_predict[0][1]= predict[0]
 		date_predict[0][2]= combinedData[0][testTargetIndexL+1][n_features-1]
 		print('predict result:\n {0}'.format(predict))
 
@@ -101,21 +127,23 @@ def predict_complete():
 
 		print('\n')
 
-	print("date", "prediction", "origin", "training score", "predicting score")
+	print("next_n_time", "prediction", "origin", "training score", "predicting score")
 	print(date_predict_array)
 	with open('../output/output_complete.csv', 'w') as csvfile:
 		#spamwriter = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
 		spamwriter = csv.writer(csvfile, delimiter=',')
-		spamwriter.writerow(["date", "prediction", "origin", "training score", "predicting score"])
+		spamwriter.writerow(["next_n_time", "prediction", "origin", "training_score", "predicting_score"])
+		
 		for row in date_predict_array:
 			spamwriter.writerow(row)
 
 ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
-n_features = 0
+
 combinedData = readcsv('../data/rawData.csv','../data/answerData.csv')
 #combinedData = load_boston()
+
 Xbos = StandardScaler().fit_transform(combinedData[0])
-origin = combinedData[0]
+
 date = combinedData[2]
 
 
