@@ -221,6 +221,10 @@ public class AMI_CBL {
 		JButton button_3 = new JButton("\u4F7F\u7528\u985E\u795E\u7D93\u7DB2\u8DEF\u9810\u6E2C");
 		button_3.setBounds(25, 88, 218, 27);
 		panelDL.add(button_3);
+		
+		JButton btncbl = new JButton("\u986F\u793ACBL\u66F2\u7DDA");
+		btncbl.setBounds(269, 523, 133, 27);
+		panelDL.add(btncbl);
 
 		
 		
