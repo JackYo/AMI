@@ -7,30 +7,22 @@ import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JSpinner;
-import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
@@ -42,7 +34,7 @@ public class AMI_CBL {
 	private JTable table;
 	private ArrayList<ArrayList<Object>> array;
 	private DefaultTableModel tm;
-	private JTable table_1;
+	private JTable tableRight;
 
 	/**
 	 * Launch the application.
@@ -95,9 +87,17 @@ public class AMI_CBL {
 		panel.add(textField);
 		textField.setColumns(10);
 		
+		JScrollPane scrollPaneLeftList = new JScrollPane();
+		scrollPaneLeftList.setBounds(14, 118, 394, 207);
+		panel.add(scrollPaneLeftList);
+		
+		JPanel panelList = new JPanel();
+		scrollPaneLeftList.setViewportView(panelList);
+		panelList.setLayout(null);
+		
 		JList<File> list = new JList<>();
-		list.setBounds(14, 118, 394, 207);
-		panel.add(list);
+		list.setBounds(0, 0, 392, 205);
+		panelList.add(list);
 		
 		JButton button = new JButton("\u700F\u89BD");
 		button.setBounds(309, 44, 99, 27);
@@ -162,10 +162,19 @@ public class AMI_CBL {
 		}
 		tm=new DefaultTableModel();
 		tm.setDataVector(data, col);
-		table = new JTable(tm);
-		table.setBounds(14, 404, 394, 207);
 		
-		panel.add(table);
+		JScrollPane scrollPaneLeftTable = new JScrollPane();
+		scrollPaneLeftTable.setBounds(14, 404, 394, 207);
+		panel.add(scrollPaneLeftTable);
+		
+		JPanel panelLeftTable = new JPanel();
+		scrollPaneLeftTable.setViewportView(panelLeftTable);
+		panelLeftTable.setLayout(null);
+		
+		table = new JTable(tm);
+		table.setBounds(0,0,392,205);
+		
+		panelLeftTable.add(table);
 		
 
 		
@@ -229,6 +238,15 @@ public class AMI_CBL {
 				addPara.getContentPane().add(addPanel);
 				addPanel.setLayout(null);
 				addPara.setVisible(true);
+				
+				JScrollPane scrollPanePara = new JScrollPane();
+				scrollPanePara.setBounds(25, 25, 350, 200);
+				addPanel.add(scrollPanePara);
+				
+				JPanel panelPara = new JPanel();
+				scrollPanePara.setViewportView(panelPara);
+				panelPara.setLayout(null);
+				
 				JTable addTable=new JTable();
 				addTable.setBounds(25, 25, 350, 200);
 				addPanel.add(addTable);
@@ -241,17 +259,17 @@ public class AMI_CBL {
 			}});
 		panelDL.add(buttonInputPara);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(25, 142, 377, 354);
-		panelDL.add(scrollPane);
+		JScrollPane scrollPaneRightTable = new JScrollPane();
+		scrollPaneRightTable.setBounds(25, 142, 377, 354);
+		panelDL.add(scrollPaneRightTable);
 		
-		JPanel panel_1 = new JPanel();
-		scrollPane.setViewportView(panel_1);
-		panel_1.setLayout(null);
+		JPanel panelRightTable = new JPanel();
+		scrollPaneRightTable.setViewportView(panelRightTable);
+		panelRightTable.setLayout(null);
 		
-		table_1 = new JTable();
-		table_1.setBounds(14, 13, 347, 326);
-		panel_1.add(table_1);
+		tableRight = new JTable();
+		tableRight.setBounds(0, 0, 375, 352);
+		panelRightTable.add(tableRight);
 
 		
 		
