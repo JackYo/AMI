@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import tw.com.linearRegression.CBLResult.ResultInfo;
+
 public class CSVReader {
 	
 	private ArrayList<File> path;
@@ -16,11 +18,24 @@ public class CSVReader {
 	private static final String splitBy = ",";
 	private String readLine = "";
 	private ArrayList<InputResource> resultData = null;
+	private String resultPath;
+	int paramNum = 0;
 	
 	public CSVReader(ArrayList<File> p)
 	{
 		//CSV path
 		path = p;
+	}
+	
+	public CSVReader(String p)
+	{
+		resultPath = p;
+	}
+	
+	public CSVReader(String p , int paramN)
+	{
+		resultPath = p;
+		paramNum = paramN;
 	}
 	
 	public ArrayList<InputResource> parse()
@@ -94,6 +109,81 @@ public class CSVReader {
 			}
 		}
 		return resultData;
+	}
+	
+	public ArrayList<ResultInfo> resultParse()
+	{
+		ArrayList<ResultInfo> result = new ArrayList<ResultInfo>();
+		String[] rl= null;
+		try {
+			br = new BufferedReader(new FileReader(resultPath));
+			
+			readLine = br.readLine();//ignore column title
+			//br.readLine();
+			while(readLine != null)
+			{
+				readLine = br.readLine();
+				if(readLine != null && !readLine.equals(""))
+				{
+					ResultInfo ri = new ResultInfo();
+					rl = readLine.split(splitBy);
+					System.out.println(readLine);
+					ri.setDate(rl[0]);
+					ri.setPredic_elc(Double.parseDouble(rl[1]));
+					ri.setTrainScore(Double.parseDouble(rl[3]));
+					ri.setPredicScore(Double.parseDouble(rl[4]));
+					result.add(ri);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}finally {
+			if(br != null)
+			{
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+	}
+	
+	public ArrayList<String> userPredictParse()
+	{
+		ArrayList<String> userPredictData = new ArrayList<String>();
+		try {
+			br = new BufferedReader(new FileReader(resultPath));
+			String readLine = br.readLine();
+			while(readLine != null && !readLine.equals(""))
+			{
+				String[] rl = readLine.split(splitBy);
+				for(int i = 0; i < rl.length; i++)
+				{
+					userPredictData.add(rl[i]);
+				}
+				readLine = br.readLine();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+		return userPredictData;
+		
 	}
 	
 

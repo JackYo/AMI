@@ -11,7 +11,12 @@ import tw.com.linearRegression.CSVReader.InputResource;
 public class CSVWriter {
 
 	private ArrayList<InputResource> resultData = null;
+	private String[][] predictData;
 	
+	public CSVWriter(String[][] pd)
+	{
+		predictData = pd;
+	}
 	
 	public CSVWriter(ArrayList<InputResource> r)
 	{
@@ -20,15 +25,16 @@ public class CSVWriter {
 	
 	public void write() throws FileNotFoundException, UnsupportedEncodingException
 	{
-		File rawDataFile = new File("rawData.csv");
-		File answerDataFile = new File("answerData.csv");
+		File rawDataFile = new File("data\\rawData.csv");
+		File answerDataFile = new File("data\\answerData.csv");
 		PrintWriter writer = new PrintWriter(rawDataFile , "UTF-8");
 		PrintWriter ansWriter = new PrintWriter(answerDataFile , "UTF-8");
 		int featureNum = resultData.size();
 		int commaNum = featureNum + 1;
+		int elcFeature = featureNum + 1;
 		int dataRow = resultData.get(0).getDataNum();
-		System.out.println(dataRow + "," + featureNum);
-		writer.print(dataRow + "," + featureNum);
+		System.out.println(dataRow + "," + elcFeature);
+		writer.print(dataRow + "," + elcFeature);
 		for(int i = 1; i <= commaNum; i++)
 		{
 			writer.print(",");
@@ -56,6 +62,26 @@ public class CSVWriter {
 		writer.close();
 		ansWriter.close();
 		
+		
+	}
+	
+	public void predictDataWriter() throws FileNotFoundException, UnsupportedEncodingException
+	{
+		File predictDataFile = new File("data\\predictData.csv");
+
+		PrintWriter writer = new PrintWriter(predictDataFile , "UTF-8");
+		for(int i = 0; i < predictData.length; i++)
+		{
+			for(int j = 0; j < predictData[i].length; j++)
+			{
+				writer.print(predictData[i][j]);
+				if(j != predictData[i].length -1)
+					writer.print(",");
+			}
+			writer.print("\n");
+		}
+		
+		writer.close();
 		
 	}
 	
