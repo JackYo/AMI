@@ -32,6 +32,7 @@ import java.awt.Color;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class AMI_CBL {
 
@@ -41,6 +42,7 @@ public class AMI_CBL {
 	private JTable table;
 	private ArrayList<ArrayList<Object>> array;
 	private DefaultTableModel tm;
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -200,17 +202,13 @@ public class AMI_CBL {
 		label_4.setBounds(234, 35, 57, 19);
 		panelDL.add(label_4);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(25, 142, 377, 354);
-		panelDL.add(textArea);
-		
-		JButton button_3 = new JButton("\u4F7F\u7528\u985E\u795E\u7D93\u7DB2\u8DEF\u9810\u6E2C");
-		button_3.addActionListener(new ActionListener() {
+		JButton buttonPredict = new JButton("\u4F7F\u7528\u985E\u795E\u7D93\u7DB2\u8DEF\u9810\u6E2C");
+		buttonPredict.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		button_3.setBounds(25, 88, 218, 27);
-		panelDL.add(button_3);
+		buttonPredict.setBounds(25, 88, 218, 27);
+		panelDL.add(buttonPredict);
 		
 		JButton btncbl = new JButton("\u986F\u793ACBL\u66F2\u7DDA");
 		btncbl.setBounds(269, 523, 133, 27);
@@ -242,6 +240,18 @@ public class AMI_CBL {
 				addPanel.add(addSave);
 			}});
 		panelDL.add(buttonInputPara);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(25, 142, 377, 354);
+		panelDL.add(scrollPane);
+		
+		JPanel panel_1 = new JPanel();
+		scrollPane.setViewportView(panel_1);
+		panel_1.setLayout(null);
+		
+		table_1 = new JTable();
+		table_1.setBounds(14, 13, 347, 326);
+		panel_1.add(table_1);
 
 		
 		
