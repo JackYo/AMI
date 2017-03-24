@@ -91,13 +91,9 @@ public class AMI_CBL {
 		scrollPaneLeftList.setBounds(14, 118, 394, 207);
 		panel.add(scrollPaneLeftList);
 		
-		JPanel panelList = new JPanel();
-		scrollPaneLeftList.setViewportView(panelList);
-		panelList.setLayout(null);
 		
 		JList<File> list = new JList<>();
-		list.setBounds(0, 0, 392, 205);
-		panelList.add(list);
+		scrollPaneLeftList.setViewportView(list);
 		
 		JButton button = new JButton("\u700F\u89BD");
 		button.setBounds(309, 44, 99, 27);
@@ -167,14 +163,8 @@ public class AMI_CBL {
 		scrollPaneLeftTable.setBounds(14, 404, 394, 207);
 		panel.add(scrollPaneLeftTable);
 		
-		JPanel panelLeftTable = new JPanel();
-		scrollPaneLeftTable.setViewportView(panelLeftTable);
-		panelLeftTable.setLayout(null);
-		
 		table = new JTable(tm);
-		table.setBounds(0,0,392,205);
-		
-		panelLeftTable.add(table);
+		scrollPaneLeftTable.setViewportView(table);
 		
 
 		
@@ -243,13 +233,8 @@ public class AMI_CBL {
 				scrollPanePara.setBounds(25, 25, 350, 200);
 				addPanel.add(scrollPanePara);
 				
-				JPanel panelPara = new JPanel();
-				scrollPanePara.setViewportView(panelPara);
-				panelPara.setLayout(null);
-				
 				JTable addTable=new JTable();
-				addTable.setBounds(25, 25, 350, 200);
-				addPanel.add(addTable);
+				scrollPanePara.setViewportView(addTable);
 				JButton addRead=new JButton("\u8B80\u6A94");
 				addRead.setBounds(25, 250, 100, 25);
 				addPanel.add(addRead);
@@ -263,13 +248,8 @@ public class AMI_CBL {
 		scrollPaneRightTable.setBounds(25, 142, 377, 354);
 		panelDL.add(scrollPaneRightTable);
 		
-		JPanel panelRightTable = new JPanel();
-		scrollPaneRightTable.setViewportView(panelRightTable);
-		panelRightTable.setLayout(null);
-		
 		tableRight = new JTable();
-		tableRight.setBounds(0, 0, 375, 352);
-		panelRightTable.add(tableRight);
+		scrollPaneRightTable.setViewportView(tableRight);
 
 		
 		
