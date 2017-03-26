@@ -40,25 +40,12 @@ def readcsv(data_file_name, answer_file_name):
 		return data, target, date
 
 
-def predict_user():
-	sampleMin = 0
-	sampleMax = 100
-	#predictMin = 100
-	#predictMax = 150
-	featureIndex = sampleMax
-	targetIndex = sampleMin
-	#testTargetIndexL = predictMin
-	#testTargetIndexR = predictMax
-
-
-	date_predict = np.empty((1,5), dtype=np.object)
-	date_predict_array = np.empty((0,5))
 
 def predict_complete():
 	sampleMin = 0
-	sampleMax = 100
-	predictMin = 100
-	predictMax = 150
+	sampleMax = 30000
+	predictMin = 30000
+	predictMax = 30100
 	featureIndex = sampleMax
 	targetIndex = sampleMin
 	testTargetIndexL = predictMin
