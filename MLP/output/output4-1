@@ -1,0 +1,5 @@
+predict parameters: solver=lbfgs, hidden_layer_sizes=50,max_iter=150, warm_start=False, shuffle=False, random_state=1,activation=logistic
+Total predict score is: 0.12985854168
+
+target_datetime, prediction_value, real_value, training_score, predicting_score
+2015/12/13 00:15,376.9374142838434,358.99335000000002,6.131388415367877,12.466420001239891
