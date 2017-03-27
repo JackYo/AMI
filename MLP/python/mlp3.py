@@ -12,6 +12,26 @@ from sklearn.utils.testing import (assert_raises, assert_greater, assert_equal,
 
 n_features = None
 
+def readpredict(data_file_name):
+	global n_features
+	with open(data_file_name) as f:
+		data_file = csv.reader(f)
+		
+		# date and feature data
+		x = list(data_file)
+		data = np.array(x).astype("object")
+		
+
+		# data on time
+		data_on_time = np.empty((96, n_features))
+		time = np.empty((96, ),dtype=np.chararray)
+		for i in range(0,96,1):
+			
+			data_on_time[i] = data[i][1:4]
+			time[i] = str(data[i][0])
+			
+		return data_on_time, time
+
 def readcsv(data_file_name, answer_file_name):
 	global n_features
 	with open(data_file_name) as f:
@@ -72,9 +92,8 @@ def predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, r
 	predictMin = 350
 	predictMax = 365
 
-	total_score = 0.0
-	date_predict = np.empty((1,5), dtype=np.object)
-	date_predict_array = np.empty((0,5))
+	date_predict = np.empty((1,3), dtype=np.object)
+	date_predict_array = np.empty((0,3))
 
 	for k in range(0,96):
 
@@ -94,7 +113,7 @@ def predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, r
 		#print('X test narray :\n{0}'.format(Xtest))	
 		#print('y test array answer :\n{0}'.format(ytest))	
 		
-		Xpredict = combinedData[0][k][predictMin].reshape(1,-1)
+		Xpredict = predictData[0][k].reshape(1,-1)
 		
 		#Xpredict = np.empty((n_features,))
 		#for j in range(1,n_features):
@@ -122,38 +141,33 @@ def predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, r
 
 		#show training score
 		trainingScore = mlp.score(X,y)
-		date_predict[0][3]= trainingScore
+		date_predict[0][2]= trainingScore
 		#print('training score is {0}'.format(trainingScore))
 		
-		#calculate predict score
-		predictScore = mlp.score(Xtest, ytest)
-		date_predict[0][4]= predictScore
-		total_score = total_score + predictScore
-		#print('predict score is {0}'.format(predictScore))
-
-		#real predict
+				#real predict
 		predict = mlp.predict(Xpredict)
 
-		date_predict[0][0]= combinedData[2][k][predictMin+1]
+		time_object = datetime.strptime(predictData[1][k], '%Y/%m/%d  %H:%M') 
+		time_object_next = time_object + timedelta(days = 1)
+		
+		date_predict[0][0]= datetime.strftime(time_object, '%Y/%m/%d  %H:%M')
 		date_predict[0][1]= predict[0]
-		date_predict[0][2]= combinedData[0][k][predictMin+1][n_features-1]
 		#print('predict result:\n {0}'.format(predict))
 
 		date_predict_array= np.append(date_predict_array,date_predict,0)
 
 		#print('\n')
 
-	print("next_n_time", "prediction", "origin", "training score", "predicting score")
-	print(date_predict_array)
-		
-	output_file_name = "../output/output2-" + str(num)
+	#print("next_n_time", "prediction", "origin", "training score", "predicting score")
+	#print(date_predict_array)
+	output_file_name = "../output/output3-" + str(num)
 	with open(output_file_name, 'w') as csvfile:
 		#spamwriter = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
 		spamwriter = csv.writer(csvfile, delimiter=',')
 		csvfile.write(
-			'predict parameters: solver={0}, hidden_layer_sizes={1},max_iter={2}, warm_start={3}, shuffle={4}, random_state={5},activation={6}\nTotal predict score is: {7}\n\n'.format(
-				sol, hidden_layer, max_it, warm, shuf, random_s, acti, total_score))
-		spamwriter.writerow(["target_datetime", " prediction_value", " real_value", " training_score", " predicting_score"])
+			'predict parameters: solver={0}, hidden_layer_sizes={1},max_iter={2}, warm_start={3}, shuffle={4}, random_state={5},activation={6}\n\n'.format(
+				sol, hidden_layer, max_it, warm, shuf, random_s, acti))
+		spamwriter.writerow(["target_datetime", " prediction_value", " training_score"])
 
 		for row in date_predict_array:
 			spamwriter.writerow(row)
@@ -162,6 +176,7 @@ def predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, r
 ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
 
 combinedData = readcsv('../data/rawData.csv','../data/answerData.csv')
+predictData = readpredict('../data/predictData.csv')
 #combinedData = load_boston()
 
 
