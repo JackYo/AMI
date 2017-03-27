@@ -11,7 +11,7 @@ from sklearn.utils.testing import (assert_raises, assert_greater, assert_equal,
 								   assert_false, ignore_warnings)
 
 n_features = None
-
+period = 1440/ int(sys.argv[1])
 def readcsv(data_file_name, answer_file_name):
 	global n_features
 	with open(data_file_name) as f:
@@ -24,8 +24,8 @@ def readcsv(data_file_name, answer_file_name):
 		#reader = csv.reader(open("test.csv", "rb"), delimiter=",")
 			
 		# names of features
-		temp = next(data_file)  
-		feature_names = np.array(temp)
+		templine = next(data_file)  
+		feature_names = np.array(templine)
 		
 		# date and feature data
 		x = list(data_file)
@@ -33,13 +33,14 @@ def readcsv(data_file_name, answer_file_name):
 		
 
 		# data on time
-		data_on_time = np.empty((96, n_samples/96, n_features))
-		time = np.empty((96, n_samples/96),dtype=np.chararray)
-		for i in range(0,96,1):
+		data_on_time = np.empty((period, n_samples/period, n_features))
+		data_length = np.empty((period,))
+		time = np.empty((period, n_samples/period),dtype=np.chararray)
+		for i in range(0,period,1):
 
-			temp = data[i:n_samples:96]
-
-			for p in range(0,365):
+			temp = data[i:n_samples:period]
+			data_length[i] = len(temp)
+			for p in range(0,len(temp)):
 				data_on_time[i][p] = temp[p][1:4]
 				time[i][p] = str(temp[p][0])
 				
@@ -54,42 +55,43 @@ def readcsv(data_file_name, answer_file_name):
 				#target[i] = np.asarray(d[-1], dtype=np.float64)
 		"""
 		
-		target = np.empty((96, n_samples/96))
+		target = np.empty((period, n_samples/period))
 		with open(answer_file_name) as f2:
 			answer_file = csv.reader(f2)
 			for j, e in enumerate(answer_file):
 				#print(e[0])
-				target[j%96][j/96] = e[0]
+				target[j%period][j/period] = e[0]
 				#print("target {0}".format(target))
 
 		#print("target {0}".format(target))
-		return data_on_time, target, time
+		return data_on_time, target, time, data_length
 
 
 def predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, random_s=1,acti="logistic"):
 	sampleMin = 0
-	sampleMax = 365
-	predictMin = 350
+	sampleMax = 345
+	predictMin = 345
 	predictMax = 365
 
 	total_score = 0.0
 	date_predict = np.empty((1,5), dtype=np.object)
 	date_predict_array = np.empty((0,5))
 
-	for k in range(0,96):
+	for k in range(0,period):
 
+		data_length = combinedData[3][k]
 		#Xstand = StandardScaler().fit_transform(combinedData[0][k])
 		#Xtrain = Xstand[sampleMin:sampleMax]
 		#Xtrain = combinedData[0][k]
 
-		X = combinedData[0][k][sampleMin:sampleMax]
-		y = combinedData[1][k][sampleMin:sampleMax]
+		X = combinedData[0][k][sampleMin:data_length-20]
+		y = combinedData[1][k][sampleMin:data_length-20]
 
 		#print('X narray , K= {1} :\n{0}'.format(X,k))		
 		#print('y array answer:\n{0}'.format(y))
 
-		Xtest = combinedData[0][k][predictMin:predictMax]
-		ytest = combinedData[1][k][predictMin:predictMax]
+		Xtest = combinedData[0][k][predictMin:data_length]
+		ytest = combinedData[1][k][predictMin:data_length]
 
 		#print('X test narray :\n{0}'.format(Xtest))	
 		#print('y test array answer :\n{0}'.format(ytest))	
