@@ -11,7 +11,7 @@ from sklearn.utils.testing import (assert_raises, assert_greater, assert_equal,
 								   assert_false, ignore_warnings)
 
 n_features = None
-period = 1440/ int(sys.argv[1])
+period = int(1440/ int(sys.argv[1]))
 def readpredict(data_file_name):
 	global n_features
 	with open(data_file_name) as f:
