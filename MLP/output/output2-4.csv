@@ -1,0 +1,2 @@
+predict score is:  3.83179186186e+183target_datetime, prediction_value, real_value, training_score(MAE), predicting_score(MAE)
+2015/12/13 00:15,371.80032252173902,358.99335000000002,22.532938033522377,23.00454752173902

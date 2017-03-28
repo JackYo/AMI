@@ -1,6 +1,7 @@
-﻿from datetime import datetime, timedelta
+from datetime import datetime, timedelta
 import csv
 import sys
+sys.path.insert(0,"./pyrenn")
 import warnings
 
 import numpy as np
@@ -9,6 +10,8 @@ from sklearn.datasets import load_boston
 from sklearn.neural_network import MLPRegressor
 from sklearn.utils.testing import (assert_raises, assert_greater, assert_equal,
 								   assert_false, ignore_warnings)
+from pyrenn.python import pyrenn
+import matplotlib.pyplot as plt
 
 n_features = None
 period = int(1440/ int(sys.argv[1]))
@@ -74,41 +77,52 @@ def MAE(a,b,length):
 		suma = suma + temp
 	out = float(suma/length)
 	#print('MAE:  {0}'.format(out))
-	
+	#print('a: {0}\nb: {1}\nout: {2}'.format(a,b,out))
 	return(out)
 
-def predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, random_s=1,acti="logistic"):
+
+def predict2(verbose=True,k_max=200,E_stop=1e-3):
 	sampleMin = 0
 	sampleMax = 345
 	predictMin = 345
 	predictMax = 365
 
+	total_score = 0.0
 	date_predict = np.empty((1,5), dtype=np.object)
 	date_predict_array = np.empty((0,5))
 
 	predict_array = np.empty((period,))
 	real_array = np.empty((period,))
-	for k in range(0,96):
-
+	for k in range(0,period):
+		print('Loop No.{0}'.format(k))
 		data_length = combinedData[3][k]
+		print('data length {0}'.format(data_length))
 		#Xstand = StandardScaler().fit_transform(combinedData[0][k])
 		#Xtrain = Xstand[sampleMin:sampleMax]
 		#Xtrain = combinedData[0][k]
-
-		X = combinedData[0][k][sampleMin:data_length-20]
-		y = combinedData[1][k][sampleMin:data_length-20]
-
+		y = np.empty((1,345))
+		y0 = np.empty((1,7))
+		X = np.transpose(combinedData[0][k][sampleMin:data_length-20])
+		y[0] = combinedData[1][k][sampleMin:data_length-20]
+		y0[0] = combinedData[1][k][predictMin-7:predictMin]
+		X0 = np.transpose(combinedData[0][k][predictMin-7:predictMin])
+		print('X0 shape:\n{0}'.format(X0.shape))
+		print('y0 shape:\n{0}'.format(y0.shape))
 		#print('X narray , K= {1} :\n{0}'.format(X,k))		
 		#print('y array answer:\n{0}'.format(y))
 
-		Xtest = combinedData[0][k][predictMin:data_length]
-		ytest = combinedData[1][k][predictMin:data_length]
-
+		ytest = np.empty((1,20))
+		Xtest = np.transpose(combinedData[0][k][predictMin:data_length])
+		ytest[0] = combinedData[1][k][predictMin:data_length]
+		#print('Xtest shape:\n{0}'.format(Xtest.shape))
+		#print('ytest shape:\n{0}'.format(ytest.shape))
 		#print('X test narray :\n{0}'.format(Xtest))	
 		#print('y test array answer :\n{0}'.format(ytest))	
 		
-		Xpredict = combinedData[0][k][predictMin].reshape(1,-1)
-		
+		Xpredict = np.empty((3,1))
+		#Xpredict_ap = np.empty((3,1))
+		Xpredict = combinedData[0][k][predictMin].reshape(3,1)
+		#print('Xpredict shape:\n{0}'.format(Xpredict.shape))
 		#Xpredict = np.empty((n_features,))
 		#for j in range(1,n_features):
 		#	Xpredict[j-1] = float(sys.argv[j])
@@ -117,10 +131,11 @@ def predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, r
 		#ypredict = combinedData[1][testTargetIndexL].reshape(1,-1)
 
 		# use logistic
-		mlp = MLPRegressor(solver=sol, hidden_layer_sizes=hidden_layer,max_iter=max_it, warm_start=warm, shuffle=shuf, random_state=random_s,activation=acti) 
-		mlp.fit(X, y)
+		mlp = pyrenn.CreateNN([3,4,4,1],dIn=[],dIntern=[],dOut=[1,2,3,4,5,6,7])
+		mlp = pyrenn.train_LM(X,y,mlp,verbose=verbose,k_max=k_max,E_stop=E_stop)
 		
-		test_predict = mlp.predict(Xtest)
+		y_train_predict = pyrenn.NNOut(X,mlp,P0=X0, Y0=y0)
+		test_predict = pyrenn.NNOut(Xtest,mlp)
 		#print('y test array predict :\n{0}'.format(test_predict))
 		"""
 		if activation == 'identity':
@@ -134,20 +149,22 @@ def predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, r
 		#print('ACTIVATION_TYPES - {0} : '.format("logistic"))
 
 		#show training score
-		y_train_predict = mlp.predict(X)
-		trainingScore = MAE(y_train_predict,y,len(y))
+		#print('y_train_predict shape:\n{0}'.format(y_train_predict.shape))
+		#print('y[0] shape:\n{0}'.format(y[0].shape))
+		trainingScore = MAE(y_train_predict,y[0],len(y_train_predict))
 		date_predict[0][3]= trainingScore
 		#print('training score is {0}'.format(trainingScore))
 		
 		#calculate predict score
-		y_test_predict = mlp.predict(Xtest)
-		predictScore = MAE(y_test_predict, ytest, len(ytest))
+		#print('test_predict shape:\n{0}'.format(test_predict.shape))
+		#print('ytest[0] shape:\n{0}'.format(ytest[0].shape))
+		predictScore = MAE(test_predict,ytest[0],len(test_predict))
 		date_predict[0][4]= predictScore
-		
+		total_score = float((total_score + predictScore)/period)
 		#print('predict score is {0}'.format(predictScore))
 
 		#real predict
-		predict = mlp.predict(Xpredict)
+		predict = pyrenn.NNOut(Xpredict,mlp)
 
 		date_predict[0][0]= combinedData[2][k][predictMin+1]
 		date_predict[0][1]= predict[0]
@@ -158,33 +175,39 @@ def predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, r
 
 		predict_array[k] = predict[0]
 		real_array[k] = combinedData[0][k][predictMin+1][n_features-1]
+		print('predict[{0}]: {1}\nreal[{0}]: {2}'.format(k,predict_array[k],real_array[k]))
 		#print('\n')
 
-	print("next_n_time", "prediction", "origin", "training score", "predicting score")
-	print(date_predict_array)
+	#print("next_n_time", "prediction", "origin", "training_score(MAE)", "predicting_score(MAE)")
+	#print(date_predict_array)
 		
-	output_file_name = "../output/output2-" + str(num) + ".csv"
+	
 	with open(output_file_name, 'w') as csvfile:
 		#spamwriter = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
 		spamwriter = csv.writer(csvfile, delimiter=',')
 		mae = MAE(predict_array,real_array,period)
-		csvfile.write('predict score is:  {0}\n'.format(mae))
-		#	'predict parameters: solver={0}, hidden_layer_sizes={1},max_iter={2}, warm_start={3}, shuffle={4}, random_state={5},activation={6}\nTotal  {7}\n\n'.format(
-		#		sol, hidden_layer, max_it, warm, shuf, random_s, acti, 
-		spamwriter.writerow(["target_datetime", " prediction_value", " real_value", " training_score(MAE)", " predicting_score(MAE)"])
+		csvfile.write('prediction score is:  {0}\n'.format(mae) + '.csv')
+		#	'predict parameters: solver={0}, hidden_layer_sizes={1},max_iter={2}, warm_start={3}, shuffle={4}, random_state={5},activation={6}\nTotal predict score is: {7}\n\n'.format(
+		#		sol, hidden_layer, max_it, warm, shuf, random_s, acti, mae))
+		spamwriter.writerow(["target_datetime", " predicted_value", " real_value", " training_MAE", " predicting_MAE"])
 
 		for row in date_predict_array:
 			spamwriter.writerow(row)
 
 
+ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
+
 combinedData = readcsv('../data/rawData.csv','../data/answerData.csv')
 #combinedData = load_boston()
+
+
 #predict_complete()
 #print('"predict parameters:\nsolver="lbfgs", hidden_layer_sizes=50,max_iter=150, warm_start=False, shuffle=False, random_state=1,activation="logistic""')
 print('processing...')
-num = 1
-predict2(sol='lbfgs', hidden_layer=4, max_it=150, warm=False, shuf=False, random_s=1,acti="logistic")
+num = int(sys.argv[3])
+predict2(verbose=True,k_max=int(sys.argv[2]),E_stop=1e-3)
 print('1st module finished.')
+print('output file name: {0}'.format(output_file_name = "../output/output4-" + str(num) + ".csv"))
 # print('processing next module...')
 # num = 2
 # predict2(sol='sgd', hidden_layer=50, max_it=150, warm=False, shuf=False, random_s=1,acti="logistic")
@@ -194,8 +217,8 @@ print('1st module finished.')
 # predict2(sol='adam', hidden_layer=50, max_it=150, warm=False, shuf=False, random_s=1,acti="logistic")
 # print('3rd module finished.')
 
-print('processing next module...')
-num = 2
-predict2(sol='lbfgs', hidden_layer=50, max_it=150, warm=False, shuf=False, random_s=1,acti="logistic")
-print('2nd module finished.')
+#print('processing next module...')
+#num = 4
+#predict2(sol='lbfgs', hidden_layer=3, max_it=150, warm=False, shuf=False, random_s=1,acti="logistic")
+#print('4th module finished.')
 
