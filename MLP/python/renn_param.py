@@ -70,6 +70,15 @@ def readcsv(data_file_name, answer_file_name):
 		#print("target {0}".format(target))
 		return data_on_time, target, time, data_length
 
+def MAPE(pre,real,length):
+	suma = 0.0
+
+	for n in range(0,length):
+		temp = abs(pre[n]-real[n])/real[n]
+		suma = suma + temp
+	out = float(suma/length)
+	return(out)
+
 def MAE(a,b,length):
 	suma = 0.0
 
@@ -163,7 +172,7 @@ def predict2(verbose=True,k_max=200,E_stop=1e-3):
 		#ypredict = combinedData[1][testTargetIndexL].reshape(1,-1)
 
 		# use logistic
-		mlp = pyrenn.CreateNN([3,4,4,1],dIn=[0,1,2,3],dIntern=[],dOut=[1,2,3])
+		mlp = pyrenn.CreateNN([3,7,7,1],dIn=[0,1,2,3],dIntern=[],dOut=[1,2,3])
 		mlp = pyrenn.train_LM(X,y,mlp,verbose=verbose,k_max=k_max,E_stop=E_stop)
 		
 		y_train_predict = pyrenn.NNOut(X,mlp)
@@ -198,8 +207,8 @@ def predict2(verbose=True,k_max=200,E_stop=1e-3):
 		#print('predict score is {0}'.format(predictScore))
 
 		#real predict
-		predict = pyrenn.NNOut(Xpredict,mlp,P0=X0, Y0=y0)
-		predict2 = pyrenn.NNOut(Xpredict,mlp)
+		
+		predict = pyrenn.NNOut(Xpredict,mlp)
 
 		date_predict[0][0]= combinedData[2][k][predictMin+1]
 		date_predict[0][1]= predict[0]
@@ -208,7 +217,6 @@ def predict2(verbose=True,k_max=200,E_stop=1e-3):
 
 		date_predict_array= np.append(date_predict_array,date_predict,0)
 
-		predict_array2[k] = predict2[0]
 		predict_array[k] = predict[0]
 		real_array[k] = combinedData[0][k][predictMin+1][n_features-1]
 		print('predict[{0}]: {1} & {3}\nreal[{0}]:    {2}\n'.format(k,predict_array[k],real_array[k],predict_array2[k]))
@@ -217,18 +225,21 @@ def predict2(verbose=True,k_max=200,E_stop=1e-3):
 
 	#print("next_n_time", "prediction", "origin", "training_score(MAE)", "predicting_score(MAE)")
 	#print(date_predict_array)
-	nmse2 = NMSE(predict_array2,real_array,test_loop)
+
 	nmse = NMSE(predict_array,real_array,test_loop)
 	mae = MAE(predict_array,real_array,test_loop)
+	mape = MAPE(predict_array,real_array,test_loop)
 	print('Test prediction MAE: {0}'.format(mae))
 	print('Test prediction NMSE: {0}'.format(nmse))
+	print('Test prediction NMSE: {0}'.format(mape))
+
 	with open(output_file_name, 'w') as csvfile:
 		#spamwriter = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
 		spamwriter = csv.writer(csvfile, delimiter=',')
 		#print(predict_array)
 		#print(real_array)
 		
-		csvfile.write('Test prediction NMSE is:  {0} & {1} , MAE is:  {2}\n'.format(nmse,nmse2,mae))
+		csvfile.write(str(m) + ' prediction NMSE is:  {0}, MAE is:  {1}\nMAPE is: {2}\n'.format(nmse,mae,mape))
 
 		#	'predict parameters: solver={0}, hidden_layer_sizes={1},max_iter={2}, warm_start={3}, shuffle={4}, random_state={5},activation={6}\nTotal predict score is: {7}\n\n'.format(
 		#		sol, hidden_layer, max_it, warm, shuf, random_s, acti, mae))
