@@ -6,10 +6,6 @@ import warnings
 
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.datasets import load_boston
-from sklearn.neural_network import MLPRegressor
-from sklearn.utils.testing import (assert_raises, assert_greater, assert_equal,
-								   assert_false, ignore_warnings)
 from pyrenn.python import pyrenn
 import matplotlib.pyplot as plt
 
@@ -172,19 +168,19 @@ def predict2(verbose=True,k_max=200,E_stop=1e-3):
 		#ypredict = combinedData[1][testTargetIndexL].reshape(1,-1)
 
 		# use logistic
-		mlp = pyrenn.CreateNN([3,7,7,1],dIn=[0,1,2,3],dIntern=[],dOut=[1,2,3])
-		mlp = pyrenn.train_LM(X,y,mlp,verbose=verbose,k_max=k_max,E_stop=E_stop)
+		net = pyrenn.CreateNN([3,7,7,1],dIn=[0,1,2,3],dIntern=[],dOut=[1,2,3])
+		net = pyrenn.train_LM(X,y,net,verbose=verbose,k_max=k_max,E_stop=E_stop)
 		
-		y_train_predict = pyrenn.NNOut(X,mlp)
-		test_predict = pyrenn.NNOut(Xtest,mlp,P0=X0, Y0=y0)
+		y_train_predict = pyrenn.NNOut(X,net)
+		test_predict = pyrenn.NNOut(Xtest,net,P0=X0, Y0=y0)
 		
 		#print('y test array predict :\n{0}'.format(test_predict))
 		"""
 		if activation == 'identity':
-			assert_greater(mlp.score(X, y), 0.84)
+			assert_greater(net.score(X, y), 0.84)
 		else:
 			# Non linear models perform much better than linear bottleneck:
-			assert_greater(mlp.score(X, y), 0.95)
+			assert_greater(net.score(X, y), 0.95)
 			"""
 
 		#show training parameter
@@ -208,7 +204,7 @@ def predict2(verbose=True,k_max=200,E_stop=1e-3):
 
 		#real predict
 		
-		predict = pyrenn.NNOut(Xpredict,mlp)
+		predict = pyrenn.NNOut(Xpredict,net)
 
 		date_predict[0][0]= combinedData[2][k][predictMin+1]
 		date_predict[0][1]= predict[0]
@@ -220,7 +216,8 @@ def predict2(verbose=True,k_max=200,E_stop=1e-3):
 		predict_array[k] = predict[0]
 		real_array[k] = combinedData[0][k][predictMin+1][n_features-1]
 		print('predict[{0}]: {1} & {3}\nreal[{0}]:    {2}\n'.format(k,predict_array[k],real_array[k],predict_array2[k]))
-		
+		output_NN_name = "../NNsave/NN_" + sys.argv[3] + "-" + str(k) + ".csv"
+		pyrenn.saveNN(net,output_NN_name)
 		#print('\n')
 
 	#print("next_n_time", "prediction", "origin", "training_score(MAE)", "predicting_score(MAE)")
@@ -248,15 +245,10 @@ def predict2(verbose=True,k_max=200,E_stop=1e-3):
 		for row in date_predict_array:
 			spamwriter.writerow(row)
 
+combinedData = readcsv('../data/rawData.csv','../data/answerData.csv')
 
-ACTIVATION_TYPES = ["identity", "logistic", "tanh", "relu"]
+output_file_name = "../output/train_record_" + sys.argv[3] + ".csv"
 
-rawData = sys.argv[3]
-answerData = sys.argv[4]
-combinedData = readcsv('../data/' +rawData ,'../data/' + answerData)
-#combinedData = load_boston()
-
-output_file_name = "../output/" + sys.argv[5]
 #predict_complete()
 #print('"predict parameters:\nsolver="lbfgs", hidden_layer_sizes=50,max_iter=150, warm_start=False, shuffle=False, random_state=1,activation="logistic""')
 print('processing...')

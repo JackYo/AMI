@@ -92,7 +92,7 @@ def readcsv(data_file_name, answer_file_name):
 		#print("target {0}".format(target))
 		return data_on_time, target, time, data_length
 
-def predict(verbose=True,k_max=200,E_stop=1e-3):
+def predict():
 	sampleMin = 0
 	sampleMax = 345
 	predictMin = 345
@@ -132,7 +132,8 @@ def predict(verbose=True,k_max=200,E_stop=1e-3):
 		#ypredict = combinedData[1][testTargetIndexL].reshape(1,-1)
 
 		# use logistic
-		net = pyrenn.loadNN('../NNsave/NN'+sys.argv[3]+ '_'+ str(k) + '.csv')
+		load_file_name = '../NNsave/NN_'+sys.argv[2]+ '-'+ str(k) + '.csv'
+		net = pyrenn.loadNN(load_file_name)
 
 		#y_train_predict = pyrenn.NNOut(X,mlp)
 		#test_predict = pyrenn.NNOut(Xtest,mlp,P0=X0, Y0=y0)
@@ -193,10 +194,10 @@ def predict(verbose=True,k_max=200,E_stop=1e-3):
 combinedData = readcsv('../data/rawData.csv','../data/answerData.csv')
 predictData = readpredict('../data/predictData.csv')
 
-output_file_name = "../output/prediction" + sys.argv[4] + ".csv"
+output_file_name = "../output/prediction_" + sys.argv[3] + ".csv"
 #predict_complete()
 #print('"predict parameters:\nsolver="lbfgs", hidden_layer_sizes=50,max_iter=150, warm_start=False, shuffle=False, random_state=1,activation="logistic""')
 print('processing...')
-predict(verbose=True,k_max=int(sys.argv[2]),E_stop=1e-3)
+predict()
 print('output file dir: {0}'.format(output_file_name))
 print('finished.\n')
