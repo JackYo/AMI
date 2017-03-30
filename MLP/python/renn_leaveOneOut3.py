@@ -99,7 +99,7 @@ def predict(verbose=True,k_max=200,E_stop=1e-3):
 	global avg_mae,avg_nmse
 	
 	left = int(sys.argv[6])-1
-	right = int(sys.argv[6]
+	right = int(sys.argv[6])
 	for m in range(left,right):
 		sampleMin = 0
 		sampleMax = 345
@@ -122,11 +122,14 @@ def predict(verbose=True,k_max=200,E_stop=1e-3):
 			Xstand = StandardScaler().fit_transform(combinedData[0][k])
 
 			y = np.empty((1,data_length-1))
+			print(y.shape)
 			y0 = np.empty((1,7))
 			Xcut = np.append( Xstand[sampleMin:m], Xstand[m+1:data_length], axis=0)
 			X = np.transpose(Xcut)
 			
 			ycut = np.append( combinedData[1][k][sampleMin:m], combinedData[1][k][m+1:data_length])
+			print( combinedData[1][k][sampleMin:m].shape)
+			print( combinedData[1][k][m+1:data_length].shape)
 			y[0] = ycut	
 			
 			Xpredict = np.empty((3,1))
@@ -185,4 +188,5 @@ with open(output_file_name, 'a') as csvfile:
 	
 	csvfile.write('\nAverage NMSE is:  {0}\n'.format(avg_nmse))
 	csvfile.write('Average MAE is:  {0}'.format(avg_mae))
+
 

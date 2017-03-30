@@ -14,7 +14,7 @@ avg_mae = 0.0
 avg_nmse = 0.0
 period = int(1440/ int(sys.argv[1]))
 test_loop = period
-leave_loop = 60
+leave_loop = 1
 
 def readcsv(data_file_name, answer_file_name):
 	global n_features
@@ -81,11 +81,11 @@ def NMSE(pre,real,length):
 	avg = 0.0
 	var = 0.0
 	for n in range(0,length):
-		avg = avg + pre[n]
+		avg = avg + real[n]
 	avg = int(avg/length)
 	
 	for n in range(0,length):
-		var = var + (pre[n]-avg)**2
+		var = var + (real[n]-avg)**2
 	var =  int(var/length)
 
 	for n in range(0,length):
@@ -98,8 +98,8 @@ def NMSE(pre,real,length):
 def predict(verbose=True,k_max=200,E_stop=1e-3):
 	global avg_mae,avg_nmse
 	
-	left = int(sys.argv[6])-1
-	right = int(sys.argv[6]
+	left = leave_loop*(int(sys.argv[6])-1)
+	right = leave_loop*int(sys.argv[6])
 	for m in range(left,right):
 		sampleMin = 0
 		sampleMax = 345
@@ -122,11 +122,13 @@ def predict(verbose=True,k_max=200,E_stop=1e-3):
 			Xstand = StandardScaler().fit_transform(combinedData[0][k])
 
 			y = np.empty((1,data_length-1))
+			print(y.shape)
 			y0 = np.empty((1,7))
 			Xcut = np.append( Xstand[sampleMin:m], Xstand[m+1:data_length], axis=0)
 			X = np.transpose(Xcut)
 			
 			ycut = np.append( combinedData[1][k][sampleMin:m], combinedData[1][k][m+1:data_length])
+			print(ycut.shape)
 			y[0] = ycut	
 			
 			Xpredict = np.empty((3,1))
@@ -181,8 +183,11 @@ print('1st module finished.\n')
 
 avg_mae = avg_mae/leave_loop
 avg_nmse = avg_nmse/leave_loop
+avg_mape = avg_mape/leave_loop
 with open(output_file_name, 'a') as csvfile:
 	
 	csvfile.write('\nAverage NMSE is:  {0}\n'.format(avg_nmse))
 	csvfile.write('Average MAE is:  {0}'.format(avg_mae))
+	csvfile.write('Average MAE is:  {0}'.format(avg_mape))
+
 
